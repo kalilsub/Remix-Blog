@@ -2,6 +2,7 @@ import { redirect, json } from "@remix-run/node"
 import NewNote, { links as newNoteLinks } from "../components/NewNote"
 import { getStoredNotes, storeNotes } from "../data/notes"
 import NoteList, { links as noteListLinks } from "../components/NoteList"
+
 import {
   useLoaderData,
   Link,
@@ -57,11 +58,18 @@ export function links() {
   return [...newNoteLinks(), ...noteListLinks()]
 }
 
+export const meta = () => {
+  return [
+    { title: "All notes" },
+    { name: "description", content: "Manage your notes with ease" },
+  ]
+}
+
 export function ErrorBoundary() {
   const routeError = useRouteError()
   const message = routeError.message || "Oops! Something went wrong."
 
-//TODO: DOES NOT WORK!!
+  //TODO: DOES NOT WORK!!
   if (isRouteErrorResponse(routeError)) {
     return (
       <main className="info-message">

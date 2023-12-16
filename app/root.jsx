@@ -9,6 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteError,
+  isRouteErrorResponse
 } from "@remix-run/react"
 
 import styles from "~/styles/main.css"
@@ -36,7 +37,7 @@ export default function App() {
       </head>
       <body>
         <header>
-          <MainNavigation/>
+          <MainNavigation />
         </header>
         <Outlet />
         <ScrollRestoration />
@@ -47,12 +48,19 @@ export default function App() {
   )
 }
 
-
 //rendred when there is an error anywhere in the app
 export function ErrorBoundary() {
   const routeError = useRouteError()
 
-  const message = routeError.message || "Oops! Somehting went wrong."
+  let statusText = "An error occured!"
+  let errorMessage = "Something went wrong! Please try again later."
+
+  // This is for CatchBoundary
+  if (isRouteErrorResponse(routeError)) {
+    statusText = routeError.statusText
+    errorMessage = routeError.data?.message
+  }
+
   return (
     <html lang="en">
       <head>
@@ -60,16 +68,18 @@ export function ErrorBoundary() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
-        <title>An error occured!</title>
+        <title>{routeError.statusText}</title>
       </head>
       <body>
         <header>
-          <MainNavigation/>
+          <MainNavigation />
         </header>
         <main className="error">
-          <h1>An error occured</h1>
-          <p>{message}</p>
-          <p>Back to <Link to="/">safety</Link></p>
+          <h1>{statusText}</h1>
+          <p>{errorMessage}</p>
+          <p>
+            Back to <Link to="/">safety</Link>
+          </p>
         </main>
         <ScrollRestoration />
         <Scripts />
