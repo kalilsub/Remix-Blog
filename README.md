@@ -2,6 +2,9 @@
 
 - [Remix Docs](https://remix.run/docs)
 
+- This tutorial is part of the [Academind Remix course](https://pro.academind.com/p/remix-js-the-practical-guide)
+- 
+
 ## Development
 
 From your terminal:
